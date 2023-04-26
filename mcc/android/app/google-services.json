@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "60015078952",
+    "project_id": "mcc-app-438a6",
+    "storage_bucket": "mcc-app-438a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60015078952:android:e6d934afcbdcbf26aa0f1d",
+        "android_client_info": {
+          "package_name": "com.example.mcc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60015078952-qh9kpmk90d26g5cofoq8uud49g32kjer.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABnGZlT-30P5FnRapnykl-ORmm-_-4d9g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60015078952-qh9kpmk90d26g5cofoq8uud49g32kjer.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
