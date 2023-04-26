@@ -7,6 +7,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:flutter/material.dart' as _i4;
 import 'package:flutter/material.dart';
+import 'package:mcc/ui/views/forgotpassword/forgotpasswordscreen_view.dart' as _i8;
 import 'package:mcc/ui/views/login/loginscreen_view.dart' as _i6;
 import 'package:mcc/ui/views/home/home_view.dart' as _i2;
 import 'package:stacked/stacked.dart' as _i1;
@@ -18,12 +19,14 @@ class Routes {
   static const startupView = '/startup-view';
   static const LoginScreenView = '/loginScreen-view';
   static const SignUpScreenView = '/signupScreen-view';
+  static const ForgotPasswordView = 'forgotpasswordScreen-view';
 
   static const all = <String>{
     homeView,
     startupView,
     LoginScreenView,
     SignUpScreenView,
+    ForgotPasswordView,
   };
 }
 
@@ -41,6 +44,10 @@ class StackedRouter extends _i1.RouterBase {
     _i1.RouteDef(
       Routes.SignUpScreenView,
       page: _i7.SignUpScreenView
+    ),
+    _i1.RouteDef(
+      Routes.ForgotPasswordView,
+      page: _i8.ForgotPasswordScreenView
     )
   ];
 
@@ -62,7 +69,13 @@ class StackedRouter extends _i1.RouterBase {
         builder: (context) => const _i7.SignUpScreenView(),
         settings: data
       );
-    }
+    },
+    _i8.ForgotPasswordScreenView: (data){
+      return _i4.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i8.ForgotPasswordScreenView(),
+        settings: data
+      );
+    },
   };
 
   @override
@@ -150,6 +163,20 @@ extension NavigatorStateExtension on _i5.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.startupView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithForgotPasswordView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+    transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.ForgotPasswordView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

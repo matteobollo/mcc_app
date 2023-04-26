@@ -39,6 +39,10 @@ class LoginScreenViewModel extends BaseViewModel{
     _navigationService.replaceWithSignUpScreenView();
   }
 
+  void runForgotPassword(){
+    _navigationService.replaceWithForgotPasswordView();
+  }
+
   GoogleLogIn() async{
     final GoogleSignInAccount? googleUser = await googleSI.signIn();
 

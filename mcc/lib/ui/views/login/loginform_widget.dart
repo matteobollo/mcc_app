@@ -58,7 +58,7 @@ class LoginForm extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: viewModel.runForgotPassword,
                     child: const Text(
                       'Password dimenticata?',
                       style: TextStyle(
