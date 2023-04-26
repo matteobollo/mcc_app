@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:mcc/ui/views/signup/signupscreen_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
+import '../login/loginscreen_view.dart';
+
 class SignUpFooter extends StatelessWidget {
   const SignUpFooter({
     super.key,
@@ -15,32 +17,37 @@ class SignUpFooter extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text(
-          'OPPURE',
-          style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Colors.black
+        Center(
+          child: const Text(
+            'OPPURE',
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.black
+            ),
           ),
         ),
         const SizedBox(height: 25),
-        SizedBox(
-          height: 50,
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: () {},
-            style: OutlinedButton.styleFrom(
-                side: const BorderSide(width: 2, color: Colors.black)
-            ),
-            icon: SvgPicture.asset('assets/images/logoGoogle.svg', width: 20),
-            label: const Text(
-              'Registrati con Google',
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black
-              ),
-            ),
-          ),
-        ),
+        TextButton(
+            onPressed: viewModel.returnToLogin,
+            child: Text.rich(
+                TextSpan(
+                    text: 'Hai già un Account? ',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                    children: [
+                      TextSpan(
+                          text: 'Accedi',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.orange
+                          )
+                      )
+                    ]
+                )
+            )
+        )
       ],
     );
   }

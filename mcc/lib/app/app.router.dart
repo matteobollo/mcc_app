@@ -9,7 +9,6 @@ import 'package:flutter/material.dart' as _i4;
 import 'package:flutter/material.dart';
 import 'package:mcc/ui/views/login/loginscreen_view.dart' as _i6;
 import 'package:mcc/ui/views/home/home_view.dart' as _i2;
-import 'package:mcc/ui/views/startup/startup_view.dart' as _i3;
 import 'package:stacked/stacked.dart' as _i1;
 import 'package:stacked_services/stacked_services.dart' as _i5;
 import '../ui/views/signup/signupscreen_view.dart' as _i7;
@@ -36,10 +35,6 @@ class StackedRouter extends _i1.RouterBase {
       page: _i2.HomeView,
     ),
     _i1.RouteDef(
-      Routes.startupView,
-      page: _i3.StartupView,
-    ),
-    _i1.RouteDef(
       Routes.LoginScreenView,
       page: _i6.LoginScreenView,
     ),
@@ -53,12 +48,6 @@ class StackedRouter extends _i1.RouterBase {
     _i2.HomeView: (data) {
       return _i4.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.HomeView(),
-        settings: data,
-      );
-    },
-    _i3.StartupView: (data) {
-      return _i4.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i3.StartupView(),
         settings: data,
       );
     },

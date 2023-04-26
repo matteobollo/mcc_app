@@ -27,7 +27,7 @@ class LoginFooter extends StatelessWidget {
           height: 50,
           width: double.infinity,
           child: OutlinedButton.icon(
-            onPressed: () {},
+            onPressed: () => viewModel.GoogleLogIn(),
             style: OutlinedButton.styleFrom(
                 side: const BorderSide(width: 2, color: Colors.black)
             ),

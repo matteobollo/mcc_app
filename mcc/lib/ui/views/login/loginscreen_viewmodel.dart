@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mcc/app/app.router.dart';
 import 'package:stacked/stacked.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../../../app/app.locator.dart';
+import 'loginform_widget.dart';
+GoogleSignIn googleSI = GoogleSignIn();
 
 class LoginScreenViewModel extends BaseViewModel{
   final _navigationService = locator<NavigationService>();
   bool seePassword = false;
+  String password = '';
 
   Future singIn(String email, String password, BuildContext context) async{
-    showDialog(
-        context: context,
-        builder: (context) => Center(child: CircularProgressIndicator())
-    );
-
     try{
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email.trim(), password: password.trim());
     } on FirebaseAuthException catch (e) {
       print(e);
     }
-    
-    _navigationService.popUntil((route) => route.isFirst);
   }
 
   bool get getSeePassword => seePassword;
 
+  String get getText => password;
+
   void setSeePassword(){
+    password = passwordController.text;
     seePassword = !seePassword;
     rebuildUi();
   }
@@ -39,4 +39,16 @@ class LoginScreenViewModel extends BaseViewModel{
     _navigationService.replaceWithSignUpScreenView();
   }
 
+  GoogleLogIn() async{
+    final GoogleSignInAccount? googleUser = await googleSI.signIn();
+
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
 }

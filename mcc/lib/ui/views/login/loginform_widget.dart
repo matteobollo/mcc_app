@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mcc/ui/views/login/loginscreen_viewmodel.dart';
 import 'package:stacked/stacked.dart';
+final TextEditingController passwordController = TextEditingController();
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key,});
 
   @override
   Widget build(BuildContext context) {
-    LoginScreenViewModel viewModel = getParentViewModel(context);
     final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
+    LoginScreenViewModel viewModel = getParentViewModel(context);
+    passwordController.text = viewModel.getText;
     return Form(
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 30),
@@ -21,6 +22,11 @@ class LoginForm extends StatelessWidget {
                 controller: emailController,
                 cursorColor: Colors.orange,
                 decoration: const InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors.orange
+                        )
+                    ),
                     prefixIcon: Icon(Icons.person_outline_outlined, color: Colors.orange,),
                     hintText: 'E-Mail',
                     border: OutlineInputBorder(
@@ -34,12 +40,17 @@ class LoginForm extends StatelessWidget {
                 cursorColor: Colors.orange,
                 obscureText: viewModel.getSeePassword,
                 decoration: InputDecoration(
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.orange
+                    )
+                  ),
                     prefixIcon: const Icon(Icons.fingerprint, color: Colors.orange,),
                     hintText: 'Password',
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                         onPressed: viewModel.setSeePassword,
-                        icon: viewModel.getSeePassword ? const Icon(Icons.visibility, color: Colors.orange,) : const Icon(Icons.visibility_off, color: Colors.orange,)
+                        icon: viewModel.getSeePassword ? const Icon(Icons.visibility, color: Colors.orange,) : const Icon(Icons.visibility_off, color: Colors.grey,)
                     )
                 ),
               ),
