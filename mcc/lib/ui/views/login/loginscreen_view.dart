@@ -25,7 +25,7 @@ class LoginScreenView extends StackedView<LoginScreenViewModel>{
             children: const [
               LoginHeader(),
               LoginForm(),
-              LoginFooter()
+              LoginFooter(),
             ],
           )
         ),

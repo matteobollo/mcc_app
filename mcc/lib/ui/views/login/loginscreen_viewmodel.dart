@@ -11,17 +11,22 @@ GoogleSignIn googleSI = GoogleSignIn();
 class LoginScreenViewModel extends BaseViewModel{
   final _navigationService = locator<NavigationService>();
   bool seePassword = false;
+  bool logged = true;
   String password = '';
 
   Future singIn(String email, String password, BuildContext context) async{
     try{
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email.trim(), password: password.trim());
+      logged = true;
     } on FirebaseAuthException catch (e) {
-      print(e);
+      logged = false;
+      notifyListeners();
     }
   }
 
   bool get getSeePassword => seePassword;
+
+  bool get getLogged => logged;
 
   String get getText => password;
 

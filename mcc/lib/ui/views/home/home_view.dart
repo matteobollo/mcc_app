@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:mcc/ui/common/app_colors.dart';
 import 'package:mcc/ui/common/ui_helpers.dart';
-
+import '../../component/navigationdrawer_appbar.dart';
 import 'home_viewmodel.dart';
+
+bool showselect = false;
 
 class HomeView extends StackedView<HomeViewModel> {
   const HomeView({Key? key}) : super(key: key);
@@ -18,6 +20,18 @@ class HomeView extends StackedView<HomeViewModel> {
     HomeViewModel viewModel = HomeViewModel();
     final user = FirebaseAuth.instance.currentUser!;
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+            'Dashboard',
+          style: TextStyle(
+            fontWeight: FontWeight.w600
+          ),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.orange[400],
+      ),
+      drawer: NavigationDrawerCustom(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -50,7 +64,7 @@ class HomeView extends StackedView<HomeViewModel> {
                               color: Colors.white
                             ),
                           )
-                      )
+                      ),
               ],
             ),
                 ),

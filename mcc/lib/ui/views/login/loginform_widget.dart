@@ -72,8 +72,8 @@ class LoginForm extends StatelessWidget {
                 height: 50,
                 width: double.infinity,
                 child: ElevatedButton(
-                    onPressed: () {
-                      viewModel.singIn(emailController.text, passwordController.text,context);
+                    onPressed: ()  {
+                     viewModel.singIn(emailController.text, passwordController.text,context);
                     },
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.deepOrangeAccent),
