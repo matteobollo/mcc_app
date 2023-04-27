@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import '../../component/meetingdata.dart';
 import '../../component/navigationdrawer_appbar.dart';
 import 'calendar_viewmodel.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:intl/intl.dart';
 
 bool showselect = false;
 
@@ -60,9 +60,10 @@ class CalendarViewScreen extends StackedView<CalendarViewModel> {
                 )
             );
           } else{
-            return Container(
-              child: Center(
-                child: CircularProgressIndicator(),
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.orange,
+                backgroundColor: Color(0xFF555556),
               ),
             );
           }
@@ -75,49 +76,3 @@ class CalendarViewScreen extends StackedView<CalendarViewModel> {
   CalendarViewModel viewModelBuilder(BuildContext context,) => CalendarViewModel();
 }
 
-class MeetingDataSource extends CalendarDataSource {
-  MeetingDataSource(List<Meeting>  source) {
-    appointments = source;
-  }
-
-  @override
-  DateTime getStartTime(int index) {
-    return appointments![index].from;
-  }
-
-  @override
-  DateTime getEndTime(int index) {
-    return appointments![index].to;
-  }
-
-  @override
-  Color getColor(int index) {
-    return appointments![index].background;
-  }
-
-  @override
-  String getSubject(int index) {
-    return appointments![index].eventName;
-  }
-
-  @override
-  bool isAllDay(int index) {
-    return appointments![index].isAllDay;
-  }
-}
-
-class Meeting{
-  Meeting({
-    this.eventName,
-    required this.from,
-    required this.to,
-    this.background,
-    this.isAllDay = false
-  });
-
-  String? eventName;
-  DateTime? from;
-  DateTime? to;
-  Color? background;
-  bool? isAllDay;
-}

@@ -5,15 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-
-import 'calendar_view.dart';
+import '../../component/meeting.dart';
 
 class CalendarViewModel extends BaseViewModel{
   List<Color> _collectionColor = [];
 
 
   Future<List<Meeting>> getDatafromGoogleSheet() async{
-    initializeColor();
     Response data = await get(Uri.parse("https://script.google.com/macros/s/AKfycbxCOGSEiYaKVHl1hSoQPryCj5NH7xYVEUVY-FxOaIpX7T-CaTR1bPi_9ZsNMTG1rOBV/exec"));
     dynamic jsonAppData = jsonDecode(data.body);
     List<Meeting> appointmentData = [];
@@ -23,7 +21,7 @@ class CalendarViewModel extends BaseViewModel{
         eventName: data['subject'],
         from: stringToDateTime(data['starttime']),
         to: stringToDateTime(data['endtime']),
-        background: _collectionColor[random.nextInt(8)],
+        background: initializeColor(data['subject']),
       );
       appointmentData.add(meetingData);
     }
@@ -35,15 +33,20 @@ class CalendarViewModel extends BaseViewModel{
     return format.parse(string);
   }
 
-  void initializeColor(){
-    _collectionColor.add(Colors.redAccent);
-    _collectionColor.add(Colors.lightGreenAccent);
-    _collectionColor.add(Colors.greenAccent);
-    _collectionColor.add(Colors.purpleAccent);
-    _collectionColor.add(Colors.blueAccent);
-    _collectionColor.add(Colors.pinkAccent);
-    _collectionColor.add(Colors.indigoAccent);
-    _collectionColor.add(Colors.tealAccent);
+  initializeColor(String tipo){
+    if(tipo.contains('Piscina')){
+      return Colors.indigoAccent;
+    } else if(tipo.contains('Gita')){
+      return Colors.green;
+    } else if(tipo.contains('Inizio')){
+      return Colors.deepPurpleAccent;
+    } else if(tipo.contains('Fine')){
+      return Colors.redAccent;
+    } else if(tipo.contains('Festa')) {
+      return Colors.teal;
+    } else{
+      return Colors.pinkAccent;
+    }
   }
 }
 
