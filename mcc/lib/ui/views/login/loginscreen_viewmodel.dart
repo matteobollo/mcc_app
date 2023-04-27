@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mcc/app/app.router.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:stacked/stacked.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../../../app/app.locator.dart';
 import 'loginform_widget.dart';
+import 'package:googleapis/calendar/v3.dart' as GoogleAPI;
 GoogleSignIn googleSI = GoogleSignIn();
+GoogleSignInAccount? googleUser;
 
 class LoginScreenViewModel extends BaseViewModel{
   final _navigationService = locator<NavigationService>();
@@ -20,7 +23,13 @@ class LoginScreenViewModel extends BaseViewModel{
       logged = true;
     } on FirebaseAuthException catch (e) {
       logged = false;
-      notifyListeners();
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: 'Errore..',
+        text: 'Email e/o Password errate!',
+          confirmBtnColor: Colors.blueGrey
+      );
     }
   }
 
@@ -49,7 +58,7 @@ class LoginScreenViewModel extends BaseViewModel{
   }
 
   GoogleLogIn() async{
-    final GoogleSignInAccount? googleUser = await googleSI.signIn();
+   googleUser = await googleSI.signIn();
 
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 

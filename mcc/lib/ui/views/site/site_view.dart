@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../component/navigationdrawer_appbar.dart';
-import 'subscribe_viewmodel.dart';
+import 'site_viewmodel.dart';
 
-class SubscribeView extends StackedView<SubscribeViewModel> {
-  const SubscribeView({Key? key}) : super(key: key);
+class SiteView extends StackedView<SiteViewModel> {
+  const SiteView({Key? key}) : super(key: key);
 
   @override
   Widget builder(
     BuildContext context,
-      SubscribeViewModel viewModel,
+      SiteViewModel viewModel,
     Widget? child,
   ) {
-    SubscribeViewModel viewModel = SubscribeViewModel();
+    SiteViewModel viewModel = SiteViewModel();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-            'Iscriviti',
+            'Il nostro sito',
           style: TextStyle(
             fontWeight: FontWeight.w600
           ),
@@ -36,8 +36,8 @@ class SubscribeView extends StackedView<SubscribeViewModel> {
   }
 
   @override
-  SubscribeViewModel viewModelBuilder(
+  SiteViewModel viewModelBuilder(
     BuildContext context,
   ) =>
-      SubscribeViewModel();
+      SiteViewModel();
 }

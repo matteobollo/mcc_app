@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mcc/ui/views/calendar/calendar_view.dart';
 import 'package:mcc/ui/views/home/home_view.dart';
 import 'package:mcc/ui/views/subscribe/subscribe_view.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import '../views/calendar/calendar_viewmodel.dart';
 import '../views/login/loginscreen_viewmodel.dart';
+import '../views/site/site_view.dart';
 
 class NavigationDrawerCustom extends StatelessWidget{
 
@@ -47,12 +50,12 @@ Widget buildMenuItems(BuildContext context) => Container(
       ListTile(
         leading: const Icon(Icons.calendar_month_outlined),
         title: const Text('Calendario'),
-        onTap: () {},
+        onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const CalendarViewScreen())),
       ),
       ListTile(
-        leading: const Icon(Icons.newspaper_outlined),
-        title: const Text('Avvisi'),
-        onTap: () {},
+        leading: const Icon(Icons.language_outlined),
+        title: const Text('Sito'),
+        onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const SiteView())),
       ),
       const Divider(color: Colors.black54),
       ListTile(
@@ -72,8 +75,8 @@ Widget buildMenuItems(BuildContext context) => Container(
             text: 'Vuoi uscire dalla nostra app',
             confirmBtnText: 'No',
             cancelBtnText: 'Si',
+            showCancelBtn: true,
             onCancelBtnTap: () async{
-              Navigator.pop(context);
               await FirebaseAuth.instance.signOut();
               await googleSI.signOut();
             } ,

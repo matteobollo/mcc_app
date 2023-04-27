@@ -8,6 +8,9 @@ import 'package:mcc/authentication_service.dart';
 import 'package:mcc/firebase_options.dart';
 import 'package:mcc/ui/common/app_colors.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 void main() async{
   setupLocator();
@@ -23,6 +26,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'MCC',
@@ -34,9 +38,35 @@ class MyApp extends StatelessWidget {
           bodyColor: Colors.black,
         ),
       ),
+      localizationsDelegates: const [
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        SfGlobalLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
+      ],
+      supportedLocales: const[
+        Locale('it')
+      ],
+      locale: Locale('it'),
       onGenerateRoute: StackedRouter().onGenerateRoute,
       navigatorKey: StackedService.navigatorKey,
       navigatorObservers: [StackedService.routeObserver],
     );
   }
+}
+
+class ItalianLocalizationsDelegate
+    extends LocalizationsDelegate<MaterialLocalizations> {
+  const ItalianLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) => locale.languageCode == 'it';
+
+  @override
+  Future<MaterialLocalizations> load(Locale locale) async =>
+      const DefaultMaterialLocalizations();
+
+  @override
+  bool shouldReload(LocalizationsDelegate<MaterialLocalizations> old) =>
+      false;
 }
