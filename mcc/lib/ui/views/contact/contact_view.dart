@@ -4,21 +4,21 @@ import 'package:stacked/stacked.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../component/appbar_custom.dart';
 import '../../component/navigationdrawer_appbar.dart';
-import 'subscribe_viewmodel.dart';
+import 'contact_viewmodel.dart';
 
-class SubscribeView extends StackedView<SubscribeViewModel> {
-  const SubscribeView({Key? key}) : super(key: key);
+class ContactView extends StackedView<ContactViewModel> {
+  const ContactView({Key? key}) : super(key: key);
 
   @override
   Widget builder(
     BuildContext context,
-      SubscribeViewModel viewModel,
+      ContactViewModel viewModel,
     Widget? child,
   ) {
-    SubscribeViewModel viewModel = SubscribeViewModel();
+    ContactViewModel viewModel = ContactViewModel();
     return Scaffold(
-      backgroundColor: Colors.orange[400],
-        appBar: AppBarCustom.appBarBackButton(context, 'Iscriviti'),
+        backgroundColor: Colors.orange[400],
+      appBar: AppBarCustom.appBarBackButton(context, 'Contatti'),
       body: Container(
         child: Container(
           height: 800,
@@ -37,8 +37,8 @@ class SubscribeView extends StackedView<SubscribeViewModel> {
   }
 
   @override
-  SubscribeViewModel viewModelBuilder(
+  ContactViewModel viewModelBuilder(
     BuildContext context,
   ) =>
-      SubscribeViewModel();
+      ContactViewModel();
 }

@@ -46,6 +46,7 @@ dependencies:
   quickalert: ^1.0.1
   syncfusion_localizations: ^21.1.41
   progress_indicator: ^0.2.2
+  flutter_native_splash: ^2.2.19
 
 dev_dependencies:
   flutter_test:

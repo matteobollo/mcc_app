@@ -1,15 +1,25 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import '../../component/meeting.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
+
 
 class CalendarViewModel extends BaseViewModel{
-  List<Color> _collectionColor = [];
+  CalendarView view = CalendarView.month;
+  CalendarView get getView => view;
 
+  void setView(int num){
+    if(num == 1){
+      view = CalendarView.month;
+    } else if(num == 2){
+      view = CalendarView.week;
+    }
+    rebuildUi();
+  }
 
   Future<List<Meeting>> getDatafromGoogleSheet() async{
     Response data = await get(Uri.parse("https://script.google.com/macros/s/AKfycbxCOGSEiYaKVHl1hSoQPryCj5NH7xYVEUVY-FxOaIpX7T-CaTR1bPi_9ZsNMTG1rOBV/exec"));

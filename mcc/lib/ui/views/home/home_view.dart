@@ -1,11 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:mcc/ui/views/contact/contact_view.dart';
+import 'package:mcc/ui/views/site/site_view.dart';
+import 'package:mcc/ui/views/subscribe/subscribe_view.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:stacked/stacked.dart';
-import 'package:mcc/ui/common/app_colors.dart';
-import 'package:mcc/ui/common/ui_helpers.dart';
-import '../../component/navigationdrawer_appbar.dart';
+import '../calendar/calendar_view.dart';
+import '../login/loginscreen_view.dart';
+import '../login/loginscreen_viewmodel.dart';
 import 'home_viewmodel.dart';
+import 'package:quickalert/models/quickalert_type.dart';
 
 bool showselect = false;
 
@@ -19,211 +23,244 @@ class HomeView extends StackedView<HomeViewModel> {
     Widget? child,
   ) {
     HomeViewModel viewModel = HomeViewModel();
-    final user = FirebaseAuth.instance.currentUser!;
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-            'Home',
-          style: TextStyle(
-            fontWeight: FontWeight.w600
-          ),
-          textAlign: TextAlign.center,
-        ),
         backgroundColor: Colors.orange[400],
-        elevation: 0,
-      ),
-      drawer: NavigationDrawerCustom(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(
+            'Centro Estivo M.C.C.',
+            style: TextStyle(fontWeight: FontWeight.w600),
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: Colors.orange[400],
+          elevation: 0,
+        ),
+        body: Container(
           child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            height: 800,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+            ),
+            child: ListView(
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 20.0),
-                  child: Center(child: Image(image: AssetImage('assets/images/LogoMCC.png'), width: 180)),
-                ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    child: Container(
-                      color: Colors.orange[300],
-                      height: 40,
-                      width: 200,
-                      child: Center(
-                        child: Text(
-                          viewModel.getText(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20
+                  padding: EdgeInsets.only(left: 30, top: 30),
+                  child: Row(
+                    children: [
+                      Text(
+                        viewModel.getText(),
+                        style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Image(
+                            image: AssetImage('assets/images/LogoMCC.png'),
+                            width: 55),
+                      )
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 30, top: 30),
+                    child: Row(
+                      children: [
+                        FutureBuilder(
+                            future: viewModel.getDatafromGoogleSheet(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.data != null) {
+                                if (snapshot.data.first.isOpen == 'si') {
+                                  return GestureDetector(
+                                    child: _cardInfo(Colors.orange[400]!,
+                                        'L\'estate è alle porte!', 'Iscriviti ora'),
+                                    onTap: () {
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                              const SubscribeView()));
+                                    },
+                                  );
+                                } else{
+                                  return GestureDetector(
+                                    child: _cardInfo(Colors.orange[400]!,
+                                        'Buona estate a tutti!', 'Team M.C.C.'),
+                                    onTap: () {
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                              const SubscribeView()));
+                                    },
+                                  );
+                                }
+                              } else{
+                                return const CircularProgressIndicator(
+                                  color: Colors.orange,
+                                  backgroundColor: Color(0xFF555556),
+                                );
+                              }
+                            }),
+                        GestureDetector(
+                          child: _cardInfo(Colors.teal[400]!, 'Calendario MCC!',
+                              'Non perderti nessun evento'),
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CalendarViewScreen()));
+                          },
+                        ),
+                        GestureDetector(
+                          child: _cardInfo(Colors.indigo[400]!, 'Nuovo Sito!',
+                              'Clicca qui per vederlo'),
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => const SiteView()));
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Funzionalità',
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Container(
+                          height: 250,
+                          child: GridView.count(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 8,
+                            childAspectRatio: 1.30,
+                            children: [
+                              GestureDetector(
+                                child: _cardButton('assets/images/calendar.png',
+                                    'Calendario Eventi'),
+                                onTap: () {
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const CalendarViewScreen()));
+                                },
+                              ),
+                              GestureDetector(
+                                child: _cardButton(
+                                    'assets/images/site.png', 'Sito'),
+                                onTap: () {
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SiteView()));
+                                },
+                              ),
+                              FutureBuilder(
+                                future: viewModel.getDatafromGoogleSheet(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  if (snapshot.data != null) {
+                                    if (snapshot.data.first.isOpen == 'si') {
+                                      return GestureDetector(
+                                        child: _cardButton(
+                                            'assets/images/subscribe.png',
+                                            'Iscrizioni'),
+                                        onTap: () {
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SubscribeView()));
+                                        },
+                                      );
+                                    } else {
+                                      return GestureDetector(
+                                        child: _cardButton(
+                                            'assets/images/contact.png',
+                                            'Contattaci'),
+                                        onTap: () {
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const ContactView()));
+                                        },
+                                      );
+                                    }
+                                  } else {
+                                    return const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.orange,
+                                        backgroundColor: Color(0xFF555556),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                              GestureDetector(
+                                child: _cardButton(
+                                    'assets/images/door.png', 'Esci'),
+                                onTap: () {
+                                  QuickAlert.show(
+                                    context: context,
+                                    type: QuickAlertType.confirm,
+                                    title: 'Sei sicuro?',
+                                    text: 'Vuoi uscire dalla nostra app',
+                                    confirmBtnText: 'No',
+                                    cancelBtnText: 'Si',
+                                    showCancelBtn: true,
+                                    onCancelBtnTap: () async {
+                                      await FirebaseAuth.instance.signOut();
+                                      await googleSI.signOut();
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const LoginScreenView()));
+                                    },
+                                    confirmBtnColor: Colors.red,
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ),
+                      )
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top:10, left:10, right:10),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
                   child: Container(
-                    height: 2,
-                    color: Colors.orange,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 25),
-                  child: Container(
-                    child: Text(
-                      'Novità in evidenza',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 30
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top:10),
-                  child: Card(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    child: Container(
-                      height: 200,
-                      child: Stack(
-                        children: <Widget>[
-                          Positioned.fill(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: SvgPicture.asset('assets/images/conference.svg'),
-                              )
-                          ),
-                          Positioned.fill(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [Color(0x1A000000), Color(0x99000000)],
-                                        stops: [0, 1])),
-                              )),
-                          Positioned(
-                            bottom: 16,
-                            left: 15,
-                            right: 15,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Container(
-                                    width: 280,
-                                    color: Colors.grey[500],
-                                    child: Center(
-                                      child: Text('Presentazione Centro Estivo',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 20,
-                                            color: Colors.white
-                                          ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                            top: 16,
-                            right: 16,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Container(
-                                width: 130,
-                                color: Colors.grey[500],
-                                child: Center(
-                                  child: Text(
-                                      '19/05 alle 21:00',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top:10),
-                  child: Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      child: Container(
-                        height: 200,
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned.fill(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: SvgPicture.asset('assets/images/subscriptions.svg'),
-                                )
-                            ),
-                            Positioned.fill(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      gradient: LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [Color(0x1A000000), Color(0x99000000)],
-                                          stops: [0, 1])),
-                                )),
-                            Positioned(
-                              bottom: 16,
-                              left: 15,
-                              right: 15,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Container(
-                                      width: 180,
-                                      color: Colors.grey[500],
-                                      child: Center(
-                                        child: Text('Iscrizioni Aperte!',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 20,
-                                              color: Colors.white
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
+                      color: Colors.orange[300],
+                      child: Text(
+                        'Per problemi all\'app contattare: matteo.bollo2001@gmail.com',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 12,
+                          fontWeight: FontWeight.w600
                         ),
                       )
                   ),
                 ),
               ],
             ),
-          )
-      ),
-    )
-    );
+          ),
+        ));
   }
 
   @override
@@ -231,4 +268,65 @@ class HomeView extends StackedView<HomeViewModel> {
     BuildContext context,
   ) =>
       HomeViewModel();
+}
+
+Widget _cardInfo(Color color, String title, String subtitle) {
+  return Container(
+    margin: EdgeInsets.symmetric(horizontal: 10),
+    padding: EdgeInsets.only(left: 20),
+    height: 120,
+    width: 240,
+    decoration:
+        BoxDecoration(color: color, borderRadius: BorderRadius.circular(15)),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 22,
+            color: Colors.white,
+          ),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+          subtitle,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.white70,
+          ),
+        )
+      ],
+    ),
+  );
+}
+
+Widget _cardButton(String image, String name) {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(color: Colors.grey, width: 2),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          height: 60,
+          decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage(image)),
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          name,
+          style: TextStyle(fontSize: 17),
+        )
+      ],
+    ),
+  );
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mcc/ui/views/signup/signupscreen_viewmodel.dart';
 import 'package:stacked/stacked.dart';
+
 final TextEditingController passwordControllerR = TextEditingController();
 final TextEditingController passwordconfirmControllerR = TextEditingController();
+final TextEditingController emailController = TextEditingController();
 
 class SignUpForm extends StatelessWidget {
   const SignUpForm({super.key,});
@@ -10,7 +12,7 @@ class SignUpForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SignUpScreenViewModel viewModel = getParentViewModel(context);
-    final TextEditingController emailController = TextEditingController();
+    emailController.text = viewModel.getEmail;
     passwordconfirmControllerR.text = viewModel.getPasswordC;
     passwordControllerR.text = viewModel.getPassword;
     return Form(
@@ -52,7 +54,7 @@ class SignUpForm extends StatelessWidget {
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                         onPressed: viewModel.setSeePassword,
-                        icon: viewModel.getSeePassword ? const Icon(Icons.visibility, color: Colors.orange,) : Icon(Icons.visibility_off, color: Colors.orange,)
+                        icon: viewModel.getSeePassword ? const Icon(Icons.visibility, color: Colors.orange,) : Icon(Icons.visibility_off, color: Colors.grey,)
                     )
                 ),
               ),
@@ -72,7 +74,7 @@ class SignUpForm extends StatelessWidget {
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                         onPressed: viewModel.setSeePasswordC,
-                        icon: viewModel.getSeePasswordC ? const Icon(Icons.visibility, color: Colors.orange,) : Icon(Icons.visibility_off, color: Colors.orange,)
+                        icon: viewModel.getSeePasswordC ? const Icon(Icons.visibility, color: Colors.orange,) : Icon(Icons.visibility_off, color: Colors.grey,)
                     )
                 ),
               ),

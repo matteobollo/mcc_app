@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:mcc/ui/views/login/loginscreen_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 final TextEditingController passwordController = TextEditingController();
+final TextEditingController emailController = TextEditingController();
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key,});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
     LoginScreenViewModel viewModel = getParentViewModel(context);
+    emailController.text = viewModel.getEmail;
     passwordController.text = viewModel.getText;
     return Form(
         child: Container(
